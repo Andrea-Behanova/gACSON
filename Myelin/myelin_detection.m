@@ -1,5 +1,7 @@
 function  myelin_detection(pic,handles)
+%semantic segmentation of myelin - Thresholding
 
+%Slider
 slmin = round(min(pic(:)));
 slmax = round(max(pic(:)));
 thr = round(mean(pic(:)));
@@ -19,11 +21,8 @@ S.thr = thr;
 h = uicontrol('Style', 'slider', 'Callback', {@sliderCallback,handles}, 'Min',slmin,'Max',slmax,...
                 'SliderStep',[1 1]./double(slmax-slmin),'Value',thr,...
                 'Position',[20 20 200 20]);
-% h.image = pic;
-%     f = pic;
-%     f(f<thr)=0;
-%     f(f>thr)=1;
-%     imshow(f)
+
+            
 function thr = sliderCallback(hObject, evt, handles)
     thr = get(hObject,'Value');
 %     a = get(gca,'children');
