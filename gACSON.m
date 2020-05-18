@@ -182,7 +182,7 @@ function dispSelection(hObject, eventdata, handles)
 if strcmp(handles.dispChoice, 'No Display')
     set(get(gca,'children'),'Visible','off')
     handles.dispChoice = [];
-    handles.indx = 0;
+    handles.indx = [];
 elseif isempty(handles.dispChoice)
     return
 else
@@ -262,7 +262,7 @@ end
     if strcmp(handles.overChoice, 'No Overlay')
         set(get(gca,'children'),'Visible','off')
         handles.overChoice = [];
-        handles.indxLBL = 0;
+        handles.indxLBL = [];
         dispSelection(hObject, eventdata, handles)
     elseif isempty(handles.overChoice)
         return
@@ -617,7 +617,13 @@ end
 if isempty(handles.size)
     maxi = 5;
 else
-    inx = handles.size(handles.indx);
+    
+    if isempty(handles.indx)
+        inx = handles.size(handles.indxLBL);
+    else
+        inx = handles.size(handles.indx);
+    end
+    
     if length(inx{1,1})==2
         sno = 1;
     else
@@ -3048,7 +3054,7 @@ if strcmpi(keyPressed,'delete')
         case 'Yes'
             %data delete
             handles.image(indx(2:end)) = [];
-            handles.size{indx(2:end)} = [];
+            handles.size(indx(2:end)) = [];
             
             %file list delete
             txt = get(handles.listFiles,'String');
@@ -3079,6 +3085,18 @@ if strcmpi(keyPressed,'delete')
             morphfile2 = get(handles.Morph_myelin_lbl,'String');
             morphfile2(indx) = [];
             set(handles.Morph_myelin_lbl,'String',morphfile2);
+            
+            if strcmp(file,handles.dispChoice)
+                handles.dispChoice = 'No Display';
+                set(handles.DisplayPopUp, 'Value', 1)
+                
+            elseif strcmp(file,handles.overChoice)
+                handles.overChoice = 'No Overlay';
+                set(handles.OverlayPopUp, 'Value', 1)
+            end
+            guidata(hObject, handles);
+            Disp(hObject, eventdata, handles);
+                
     end
   
 end

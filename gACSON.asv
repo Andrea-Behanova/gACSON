@@ -182,7 +182,7 @@ function dispSelection(hObject, eventdata, handles)
 if strcmp(handles.dispChoice, 'No Display')
     set(get(gca,'children'),'Visible','off')
     handles.dispChoice = [];
-    handles.indx = 0;
+    %handles.indx = 0;
 elseif isempty(handles.dispChoice)
     return
 else
@@ -262,7 +262,7 @@ end
     if strcmp(handles.overChoice, 'No Overlay')
         set(get(gca,'children'),'Visible','off')
         handles.overChoice = [];
-        handles.indxLBL = 0;
+        %handles.indxLBL = 0;
         dispSelection(hObject, eventdata, handles)
     elseif isempty(handles.overChoice)
         return
@@ -553,16 +553,16 @@ list_ws = evalin('base', 'who');
 fig = figure('Units', 'Normalized','Position', [0.4 0.5 0.2 0.1],'Name',prompt,'NumberTitle','off');
 set(fig, 'MenuBar', 'none');
 set(fig, 'ToolBar', 'none');
-uicontrol('style','pop', 'Callback', {@popCallback,handles, data},'Units', 'Normalized',...
+uicontrol('style','pop', 'Callback', {@popCallback,handles, hObject},'Units', 'Normalized',...
     'position',[0.1 0.2 0.8 0.4],'fontsize',12,...
     'string',list_ws,'value',1);
 
 function popCallback(hObject, eventdata ,handles, data)
+%handles = guidata(data);
 idx = get(hObject,'Value');
 str = get(hObject,'String');
 v_name = str(idx);
 v_name = v_name{1,1};
-close 'Select workspace variable'
 
 image = evalin('base', v_name);
 filename = v_name;
@@ -603,6 +603,7 @@ morphfile2 = [morphfile2; {filename}];
 set(handles.Morph_myelin_lbl,'String',morphfile2);
 
 guidata(data,handles);
+close 'Select workspace variable'
 
 
 function mouseScroll(hObject, eventdata,handles)
@@ -616,7 +617,13 @@ end
 if isempty(handles.size)
     maxi = 5;
 else
-    inx = handles.size(handles.indx);
+    
+    if isempty(handles.indx)
+        inx = handles.size(handles.indxLBL);
+    else
+        inx = handles.size(handles.indx);
+    end
+    
     if length(inx{1,1})==2
         sno = 1;
     else
@@ -3078,6 +3085,8 @@ if strcmpi(keyPressed,'delete')
             morphfile2 = get(handles.Morph_myelin_lbl,'String');
             morphfile2(indx) = [];
             set(handles.Morph_myelin_lbl,'String',morphfile2);
+            
+            if file == handles.overChoice, 'No Overlay'
     end
   
 end
