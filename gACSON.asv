@@ -108,6 +108,7 @@ set(handles.SlidesText, 'String', 'Slices:')
 %morphometry
 handles.morph.im = [];
 handles.morph.myelin = [];
+handles.morph.res = [1 1 3.6];
 handles.morph.grid = 15;
 
 %slices
@@ -1086,6 +1087,14 @@ set(handles.grid_size_text,'Units', 'normalized');
 set(handles.grid_size_text,'Position', [0.05 0.4 0.5 0.1]);
 set(handles.grid_size,'Units', 'normalized');
 set(handles.grid_size,'Position', [0.45 0.4 0.2 0.1]);
+set(handles.vox_res_text,'Units', 'normalized');
+set(handles.vox_res_text,'Position', [0.05 0.25 0.4 0.1]);
+set(handles.vox_res1,'Units', 'normalized');
+set(handles.vox_res1,'Position', [0.45 0.25 0.12 0.1]);
+set(handles.vox_res2,'Units', 'normalized');
+set(handles.vox_res2,'Position', [0.6 0.25 0.12 0.1]);
+set(handles.vox_res3,'Units', 'normalized');
+set(handles.vox_res3,'Position', [0.75 0.25 0.12 0.1]);
 set(handles.morphometry_button,'Units', 'normalized');
 set(handles.morphometry_button,'Position', [0.3 0.02 0.5 0.2]);
 
@@ -2158,6 +2167,31 @@ end
 
 
 
+function vox_res1_Callback(hObject, eventdata, handles)
+% hObject    handle to vox_res1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of vox_res1 as text
+%        str2double(get(hObject,'String')) returns contents of vox_res1 as a double
+r1 = get(handles.vox_res1,'String');
+handles.morph.res(1) = str2double(r1);
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function vox_res1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to vox_res1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
 % --- Executes on button press in morphometry_button.
 function morphometry_button_Callback(hObject, eventdata, handles)
 % hObject    handle to morphometry_button (see GCBO)
@@ -2170,8 +2204,16 @@ end
 
 idx = get(handles.morph_IAS_lbl, 'Value')-1;
 vox_size = handles.vox_size(idx);
+vox_size = vox_size{1,1}
 
-res = vox_size{1,1};
+indx = strcmp(handles.listFiles.String, handles.opt.read_im);
+indx = indx(2:end);
+handles.indx = indx;
+image = handles.image(indx);
+image3D = image{1,1};
+
+
+res = handles.morph.res;
 grid_size = handles.morph.grid;
 myelin = handles.morph.myelin;
 myelin = myelin{1,1};
@@ -2258,6 +2300,59 @@ save(FileName, 'axon', '-v7.3');
 
 handles.morph.axon = axon;
 guidata(hObject, handles);
+
+
+
+function vox_res2_Callback(hObject, eventdata, handles)
+% hObject    handle to vox_res2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of vox_res2 as text
+%        str2double(get(hObject,'String')) returns contents of vox_res2 as a double
+r2 = get(handles.vox_res2,'String');
+handles.morph.res(2) = str2double(r2);
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function vox_res2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to vox_res2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function vox_res3_Callback(hObject, eventdata, handles)
+% hObject    handle to vox_res3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of vox_res3 as text
+%        str2double(get(hObject,'String')) returns contents of vox_res3 as a double
+r3 = get(handles.vox_res3,'String');
+handles.morph.res(3) = str2double(r3);
+guidata(hObject, handles);
+
+
+
+% --- Executes during object creation, after setting all properties.
+function vox_res3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to vox_res3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
 % --- Executes on selection change in morph_IAS_lbl.
