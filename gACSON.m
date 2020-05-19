@@ -2961,7 +2961,7 @@ if strcmpi(keyPressed,'delete')
     file = handles.sel_filename;
     indx = strcmp(handles.listFiles.String, file);
     
-    answer = questdlg(['Do you want to delete ', file, '?'] ,'Delete','Yes', 'No','Yes');
+    answer = questdlg(['Do you want to remove ', file, '?'] ,'Delete','Yes', 'No','Yes');
     % Handle response
     switch answer
         case 'No'
