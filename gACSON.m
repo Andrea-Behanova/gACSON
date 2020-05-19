@@ -2959,6 +2959,11 @@ function listFiles_KeyPressFcn(hObject, eventdata, handles)
 keyPressed = eventdata.Key;
 if strcmpi(keyPressed,'delete')
     file = handles.sel_filename;
+    
+    if strcmp(file, 'File list:')
+        return
+    end
+    
     indx = strcmp(handles.listFiles.String, file);
     
     answer = questdlg(['Do you want to remove ', file, '?'] ,'Delete','Yes', 'No','Yes');
