@@ -474,9 +474,9 @@ for i = 1:L
 %         close(f)
     elseif strcmp(ext,'.h5')
 %         f = waitbar(0.3,'Loading');
-        prompt = {'Enter Dataset Name'};
-        answer = inputdlg(prompt);
-        dataset = answer{1,1};
+        info_h5 = h5info(filepath);
+        dataset = info_h5.Datasets.Name;
+        dataset = ['/', dataset];
         image = h5read(filepath,dataset);
 %         waitbar(0.99,f,'Loading');
 %         close(f)
