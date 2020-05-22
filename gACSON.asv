@@ -555,10 +555,6 @@ str = get(hObject,'String');
 v_name = str(idx);
 v_name = v_name{1,1};
 
-if strcmp(v_name,'Select file...')
-    return
-end
-
 image = evalin('base', v_name);
 filename = v_name;
 
