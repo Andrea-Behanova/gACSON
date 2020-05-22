@@ -449,6 +449,10 @@ for i = 1:L
     dims = [ones(size(definput')) ones(size(definput'))*50];
     answer = inputdlg(prompt,dlgtitle,dims,definput,'on');
     
+    if isempty(answer)
+        answer = {'1';'1';'1'};
+    end
+    
     voxel_size = [str2double(answer{1,1}), str2double(answer{2,1}), str2double(answer{3,1})];
     handles.vox_size = [handles.vox_size; {voxel_size}];
 
