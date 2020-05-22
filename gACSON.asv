@@ -451,9 +451,9 @@ for i = 1:L
     
     if isempty(answer)
         answer = {'1';'1';'1'};
+    end
     
     voxel_size = [str2double(answer{1,1}), str2double(answer{2,1}), str2double(answer{3,1})];
-    handles.vox_size = [handles.vox_size; {voxel_size}];
 
     if strcmp(ext,'.mat')
 %         f = waitbar(0.3,'Loading');
@@ -468,9 +468,17 @@ for i = 1:L
     elseif strcmp(ext,'.h5')
 %         f = waitbar(0.3,'Loading');
         info_h5 = h5info(filepath);
-        dataset = info_h5.Datasets.Name;
-        dataset = ['/', dataset];
-        image = h5read(filepath,dataset);
+        dataset = {info_h5.Datasets.Name};
+        
+        [indx,tf] = listdlg('PromptString',{'Select dataset...',''},'ListString',dataset);
+        
+        image = {};
+        for i = 1:length(indx)
+            dtst = info_h5.Datasets(indx(i),1).Name;
+            dataset = ['/', dtst];
+            image{i,1} = h5read(filepath,dataset);
+        end
+        
 %         waitbar(0.99,f,'Loading');
 %         close(f)
     else
@@ -486,40 +494,56 @@ for i = 1:L
         end
     end
     
-    image = squeeze(image);
-    sz = size(image);
+    if iscell(image)
+        n = length(image);
+    else
+        n = 1;
+    end
+    
+    set_image = image;
+    fil_name = filename;
+    for i = 1:n
+        if iscell(image)
+            image = set_image{i,1};
+            filename = [fil_name, info_h5.Datasets(indx(i),1).Name];
+        end
+        
+        image = squeeze(image);
+        sz = size(image);
 
-    % Saving features to memory
-    handles.image = [handles.image;{image}];
-    handles.size = [handles.size;{sz}];
+        % Saving features to memory
+        handles.image = [handles.image;{image}];
+        handles.size = [handles.size;{sz}];
+        handles.vox_size = [handles.vox_size; {voxel_size}];
 
-    % Adding file to file list
-    txt = get(handles.listFiles,'String');
-    txt = [txt; {filename}];
-    set(handles.listFiles,'String',txt);
+        % Adding file to file list
+        txt = get(handles.listFiles,'String');
+        txt = [txt; {filename}];
+        set(handles.listFiles,'String',txt);
 
-    % Adding file to Pup Up menus
-    poptxt = get(handles.DisplayPopUp,'String');
-    poptxt = [poptxt; {filename}];
-    set(handles.DisplayPopUp,'String',poptxt);
+        % Adding file to Pup Up menus
+        poptxt = get(handles.DisplayPopUp,'String');
+        poptxt = [poptxt; {filename}];
+        set(handles.DisplayPopUp,'String',poptxt);
 
-    poptxt2 = get(handles.OverlayPopUp,'String');
-    poptxt2 = [poptxt2; {filename}];
-    set(handles.OverlayPopUp,'String',poptxt2);
+        poptxt2 = get(handles.OverlayPopUp,'String');
+        poptxt2 = [poptxt2; {filename}];
+        set(handles.OverlayPopUp,'String',poptxt2);
 
-    %read file pop-up menu
-    rdfile = get(handles.readImage,'String');
-    rdfile = [rdfile; {filename}];
-    set(handles.readImage,'String',rdfile);
+        %read file pop-up menu
+        rdfile = get(handles.readImage,'String');
+        rdfile = [rdfile; {filename}];
+        set(handles.readImage,'String',rdfile);
 
-    %morphometry
-    morphfile1 = get(handles.morph_IAS_lbl,'String');
-    morphfile1 = [morphfile1; {filename}];
-    set(handles.morph_IAS_lbl,'String',morphfile1);
+        %morphometry
+        morphfile1 = get(handles.morph_IAS_lbl,'String');
+        morphfile1 = [morphfile1; {filename}];
+        set(handles.morph_IAS_lbl,'String',morphfile1);
 
-    morphfile2 = get(handles.Morph_myelin_lbl,'String');
-    morphfile2 = [morphfile2; {filename}];
-    set(handles.Morph_myelin_lbl,'String',morphfile2);
+        morphfile2 = get(handles.Morph_myelin_lbl,'String');
+        morphfile2 = [morphfile2; {filename}];
+        set(handles.Morph_myelin_lbl,'String',morphfile2);
+    end
 
     if iscell(Files)
         waitbar(i/L,f)
@@ -570,6 +594,9 @@ dlgtitle = ['Voxel size of ', filename];
 definput = {'1','1','1'};
 dims = [ones(size(definput')) ones(size(definput'))*50];
 answer = inputdlg(prompt,dlgtitle,dims,definput,'on');
+if isempty(answer)
+    answer = {'1';'1';'1'};
+end
 voxel_size = [str2double(answer{1,1}), str2double(answer{2,1}), str2double(answer{3,1})];
 handles.vox_size = [handles.vox_size; {voxel_size}];
 
