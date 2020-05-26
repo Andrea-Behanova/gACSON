@@ -3104,10 +3104,9 @@ end
 
 indx = strcmp(handles.listFiles.String, filename);
 file = handles.image(indx(2:end));
-file = file{1,1};
-[file_name, filepath] = uiputfile('*.mat', 'Save file:',filename);
+[file_name, filepath] = uiputfile('*.mat', 'Save the single label in a file:',filename);
 if logical(file_name)
     FileName = fullfile(filepath, file_name);
-    save(FileName, 'file', '-v7.3');
+    save(FileName, 'lbl', '-v7.3');
 end
 
