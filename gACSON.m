@@ -262,6 +262,7 @@ end
         slice = handles.S;
         lbl = image{1,1}(:,:,slice);
         Lrgb = label2rgb(round(lbl),'jet', 'k', 'shuffle');
+        %Lrgb = label2rgb(round(lbl),'lines', 'k');
         axes(handles.Picture)
         himage = imshow(Lrgb); himage.AlphaData = handles.alpha;
         handles.himage = himage;
@@ -563,26 +564,15 @@ function import_workspace_Callback(hObject, eventdata, handles)
 % hObject    handle to import_workspace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-prompt = 'Select workspace variable';
-data = guidata(hObject);
 
 list_ws = evalin('base', 'who');
-list_ws = [{'Select file...'}; list_ws];
-fig = figure('Units', 'Normalized','Position', [0.4 0.5 0.2 0.1],'Name',prompt,'NumberTitle','off');
-set(fig, 'MenuBar', 'none');
-set(fig, 'ToolBar', 'none');
-uicontrol('style','pop', 'Callback', {@popCallback,handles, hObject},'Units', 'Normalized',...
-    'position',[0.1 0.2 0.8 0.4],'fontsize',12,...
-    'string',list_ws,'value',1);
+list_ws = [{'Select variable...'}; list_ws];
+[indx,tf] = listdlg('PromptString',{'matlab workspace variables:',''},'SelectionMode','single','ListString',list_ws);
 
-function popCallback(hObject, eventdata ,handles, data)
-%handles = guidata(data);
-idx = get(hObject,'Value');
-str = get(hObject,'String');
-v_name = str(idx);
-v_name = v_name{1,1};
 
-if strcmp(v_name,'Select file...')
+v_name = list_ws{indx};
+
+if strcmp(v_name,'Select variable...')
     return
 end
 
@@ -635,8 +625,7 @@ morphfile2 = get(handles.Morph_myelin_lbl,'String');
 morphfile2 = [morphfile2; {filename}];
 set(handles.Morph_myelin_lbl,'String',morphfile2);
 
-guidata(data,handles);
-close 'Select workspace variable'
+guidata(hObject, handles);
 
 
 function mouseScroll(hObject, eventdata,handles)
@@ -1835,35 +1824,77 @@ elseif strcmp(choice, 'Manual selection')
     guidata(hObject, handles);
 
     label = Choosed_seed_segmenttaion(opt,hObject,handles);
-    if length(size(label))==3
-        k = figure; isosurface(label,0.5); axis equal
-    else
-        k = figure; imshow(label,[]);
-    end
+    n_labels=max(label(:));
+    fff = msgbox(['Segmentation of manually selected seeds finished: ',num2str(n_labels),' labels detected']);
     
-    answer = questdlg('Would you like to add this label to selected label in Overlay?', ...
-	'Label', ...
-	'Yes','No','Save this label','Yes');
+    image = squeeze(label);
+    sz = size(image);
+    voxel_size = handles.vox_size(indx);
+    voxel_size = voxel_size{1,1};
+    filename = ['seg_', opt.read_im];
 
-    switch answer
-        case 'Yes'
-            
-            idx = find(label);
-            lbl = handles.image{handles.indxLBL};
-            max_lbl = max(lbl(:));
-            lbl(idx) = max_lbl+1;
-            close(k)
-            handles.image{handles.indxLBL} = lbl;
-            Disp(hObject, eventdata, handles);
-        case 'No'
-            close(k)
-        case 'Save this label'
-            [filename, filepath] = uiputfile('*.mat', 'Save the single label in a file:','Manually_segmented_lbl');
-            FileName = fullfile(filepath, filename);
-            CC = bwconncomp(label);
-            save(FileName, 'CC', '-v7.3');
-            close(k)
-    end
+    % Saving features to memory
+    handles.image = [handles.image;{image}];
+    handles.size = [handles.size;{sz}];
+    handles.vox_size = [handles.vox_size; {voxel_size}];
+
+    % Adding file to file list
+    txt = get(handles.listFiles,'String');
+    txt = [txt; {filename}];
+    set(handles.listFiles,'String',txt);
+
+    % Adding file to Pup Up menus
+    poptxt = get(handles.DisplayPopUp,'String');
+    poptxt = [poptxt; {filename}];
+    set(handles.DisplayPopUp,'String',poptxt);
+
+    poptxt2 = get(handles.OverlayPopUp,'String');
+    poptxt2 = [poptxt2; {filename}];
+    set(handles.OverlayPopUp,'String',poptxt2);
+
+    %read file pop-up menu
+    rdfile = get(handles.readImage,'String');
+    rdfile = [rdfile; {filename}];
+    set(handles.readImage,'String',rdfile);
+
+    %morphometry
+    morphfile1 = get(handles.morph_IAS_lbl,'String');
+    morphfile1 = [morphfile1; {filename}];
+    set(handles.morph_IAS_lbl,'String',morphfile1);
+
+    morphfile2 = get(handles.Morph_myelin_lbl,'String');
+    morphfile2 = [morphfile2; {filename}];
+    set(handles.Morph_myelin_lbl,'String',morphfile2);
+    
+%     if length(size(label))==3
+%         k = figure; isosurface(label,0.5); axis equal
+%     else
+%         k = figure; imshow(label,[]);
+%     end
+%     
+%     answer = questdlg('Would you like to add this label to selected label in Overlay?', ...
+% 	'Label', ...
+% 	'Yes','No','Save this label','Yes');
+% 
+%     switch answer
+%         case 'Yes'
+%             
+%             idx = find(label);
+%             lbl = handles.image{handles.indxLBL};
+%             max_lbl = max(lbl(:));
+%             lbl(idx) = max_lbl+1;
+%             close(k)
+%             handles.image{handles.indxLBL} = lbl;
+%             Disp(hObject, eventdata, handles);
+%         case 'No'
+%             close(k)
+%         case 'Save this label'
+%             [filename, filepath] = uiputfile('*.mat', 'Save the single label in a file:','Manually_segmented_lbl');
+%             FileName = fullfile(filepath, filename);
+%             CC = bwconncomp(label);
+%             save(FileName, 'CC', '-v7.3');
+%             close(k)
+%     end
     
 end
 

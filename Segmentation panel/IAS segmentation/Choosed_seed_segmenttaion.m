@@ -1,5 +1,5 @@
 function [label] = Choosed_seed_segmenttaion(opt,hObject,handles)
-[y,x] = ginput(1); y = round(y(:,1)); x = round(x(:,1));
+[y,x] = getpts; y = round(y(:,1)); x = round(x(:,1));
 z = (handles.S+1)*ones(1,length(x))';
 choice = [x+1, y+1, z];
 g = waitbar(0,'Manual selection');
@@ -136,7 +136,9 @@ clear small_volumes bw_close
 %% Finding the location of seeds
 
 rgnmaxima = zeros(r1,c1,h1);
-rgnmaxima(choice(1),choice(2),choice(3)) = 1;
+for i = 1:size(choice,1)
+    rgnmaxima(choice(i,1),choice(i,2),choice(i,3)) = 1;
+end
 rps = find(rgnmaxima);
 rps = rps'; 
 clear rgnmaxima
