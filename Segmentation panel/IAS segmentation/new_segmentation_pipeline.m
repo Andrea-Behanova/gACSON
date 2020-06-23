@@ -121,6 +121,7 @@ switch answer
     case 'No, return to the programm'
         close(gg)
         return
+        close(g)
 end
 
 waitbar(0.4,g);

@@ -230,19 +230,19 @@ if handles.sbplt == 1
     handles.indx = indx;
     subplots(hObject, eventdata, handles, handles.subplots.slider1, handles.subplots.slider2, handles.subplots.slider3)
 end
-
+colors = lines;
 %Machine learning myelin
 if ~isempty(handles.ML.myelin.pos)
     act_pos = handles.ML.myelin.pos(:,3)==handles.S;
     if sum(act_pos)~=0
-        plot(handles.ML.myelin.pos(act_pos,1),handles.ML.myelin.pos(act_pos,2),'.r');
+        plot(handles.ML.myelin.pos(act_pos,1),handles.ML.myelin.pos(act_pos,2),'.','Color',colors(1,:));
     end
 end
 
 if ~isempty(handles.ML.bg.pos)
     act_pos = handles.ML.bg.pos(:,3)==handles.S;
     if sum(act_pos)~=0
-        plot(handles.ML.bg.pos(act_pos,1),handles.ML.bg.pos(act_pos,2),'.b');
+        plot(handles.ML.bg.pos(act_pos,1),handles.ML.bg.pos(act_pos,2),'.','Color',colors(2,:));
     end
 end
 
@@ -2824,7 +2824,7 @@ image = image{1,1}(:,:,handles.S);
 
 pos = draw(hObject, eventdata,handles,image);
 f = features(hObject, eventdata,handles,image,pos);
-fs = [f zeros(size(f,1),1)];
+fs = [f ones(size(f,1),1)];
 handles.ML.train = [handles.ML.train; fs];
 
 handles.ML.myelin.pos = [handles.ML.myelin.pos; pos];
@@ -2835,9 +2835,10 @@ Im_rslt = Random_forest(hObject, eventdata,handles,image,handles.S);
 
 fig = figure(2);
 imshow(uint8(image))
-set(fig, 'Position', [1000 600 700 700]);
+%set(fig, 'Position', [1000 600 700 700]);
 hold on
-Lrgb = label2rgb(Im_rslt,'jet', 'k', 'shuffle');
+% Lrgb = label2rgb(Im_rslt,'jet', 'k', 'shuffle');
+Lrgb = label2rgb(Im_rslt,'lines','k');
 himage = imshow(Lrgb); himage.AlphaData = 0.3;
 
 
@@ -2858,7 +2859,7 @@ image = image{1,1}(:,:,handles.S);
 
 pos = draw(hObject, eventdata,handles,image);
 f = features(hObject, eventdata,handles,image,pos);
-fs = [f ones(size(f,1),1)];
+fs = [f 2*ones(size(f,1),1)];
 handles.ML.train = [handles.ML.train; fs];
 
 handles.ML.bg.pos = [handles.ML.bg.pos; pos];
@@ -2870,7 +2871,8 @@ Im_rslt = Random_forest(hObject, eventdata,handles,image,handles.S);
 figure(2)
 imshow(uint8(image))
 hold on
-Lrgb = label2rgb(Im_rslt,'jet', 'k', 'shuffle');
+% Lrgb = label2rgb(Im_rslt,'jet', 'k', 'shuffle');
+Lrgb = label2rgb(Im_rslt,'lines', 'k');
 himage = imshow(Lrgb); himage.AlphaData = 0.3;
 
 handles = guidata(hObject);
@@ -2971,9 +2973,9 @@ end
 
 result = zeros(size(im));
 result(test_pos) = str2num(cell2mat(pred));
-result(linPos1) = 0;
-result(linPos2) = 1;
-result = ~logical(result);
+result(linPos1) = 1;
+result(linPos2) = 2;
+%result = ~logical(result);
 
 
 
