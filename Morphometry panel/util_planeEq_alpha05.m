@@ -33,18 +33,25 @@ for i = 1:length(skel)
 %         slice(double(bw),yy,xx,zz); hold on ; p = patch(isosurface(smooth3(bw,'gaussian',15),0.5)); 
 %         p.FaceColor = 'red'; p.EdgeColor = 'none'; p.FaceAlpha = 0.3;
 %         set(gca,'PlotBoxAspectRatio',[1 1 3.6])
-        if k==40
+        if k==60
+           k
+        end
+        if k==160
+            k
+        end
+        if k==300
             k
         end
 
-
+% colors = lines;
 % slice(double(bw),yy,xx,zz); hold on ; p = patch(isosurface(smooth3(bw,'gaussian',15),0.5));
-% p.FaceColor = 'red'; p.EdgeColor = 'none';
+% p.FaceColor = colors(2,:); p.EdgeColor = 'none';
 % set(gca,'PlotBoxAspectRatio',[1 1 3.6])
 % p = patch(isosurface(smooth3(nBW2,'gaussian',15),0.5)); %nBW2 is loaded from saved file
-% p.FaceColor = 'black'; p.EdgeColor = 'none'; p.FaceAlpha = 0.3;
+% p.FaceColor = colors(1,:); p.EdgeColor = 'none'; p.FaceAlpha = 0.2;
 % grid off
-% camlight; material shiny; lighting gouraud;
+% axis off
+% camlight; material dull; lighting gouraud;
 
         bw_cross_section = cross_section >= 0.5;
         if IAS == 1

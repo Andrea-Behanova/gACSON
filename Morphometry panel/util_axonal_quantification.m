@@ -24,7 +24,7 @@ numLabel2 = length(s3D2);
 for N = 1:numLabel
     pixIdxList = s3D(N).PixelIdxList;
     if length(pixIdxList)>4000
-        bb = s3D(N).BoundingBox;
+        bb = s3D2(N).BoundingBox;
         axon = false(sz);
         axon(pixIdxList) = true;
         [cropAxon,~] = util_extract_bounded_obj(axon,bb,[9,9,3]);
@@ -35,7 +35,7 @@ for N = 1:numLabel
         
         %myelin
         pixIdxList2 = s3D2(N).PixelIdxList;
-        bb2 = s3D(N).BoundingBox;
+        bb2 = s3D2(N).BoundingBox;
         myelin2 = false(sz);
         myelin2(pixIdxList2) = true;
         [cropMyelin,~] = util_extract_bounded_obj(myelin2,bb2,[9,9,3]);
