@@ -1,6 +1,6 @@
-# g-ACSON
+# gACSON
 
-g-ACSON software to visualize, process, and analyze three-dimensional electron microscopy images
+gACSON software to visualize, process, and analyze three-dimensional electron microscopy images
 
 [![DOI](https://zenodo.org/badge/214974720.svg)](https://zenodo.org/badge/latestdoi/214974720)
 
