@@ -1,6 +1,8 @@
 # gACSON
 
-gACSON software to visualize, process, and analyze three-dimensional electron microscopy images
+We developed gACSON software to visualize, segment, and analyze three-dimensional electron microscopy images. 
+
+If you use any part of gACSON in your research, please cite the software as
 
 [![DOI](https://zenodo.org/badge/214974720.svg)](https://zenodo.org/badge/latestdoi/214974720)
 
