@@ -153,7 +153,7 @@ currentFolder = fileparts(which('gACSON.m'));
 addpath(genpath(currentFolder));
 
 %path to the Bio Formats
-addpath('C:\Users\andrb\Desktop\FinVector\bfmatlab')
+addpath('..\bfmatlab')
 
 %Machine Learning - myelin detection
 handles.ML.myelin.pos = [];
@@ -2997,8 +2997,10 @@ set(handles.save_from_list_file, 'Enable', 'on')
 
 index_selected = get(handles.listFiles,'Value');
 file_list = get(handles.listFiles,'String');
-filename = file_list{index_selected};
-handles.sel_filename = filename;
+if iscell(file_list)
+    filename = file_list{index_selected};
+    handles.sel_filename = filename;
+end
 guidata(hObject, handles);
 
 
