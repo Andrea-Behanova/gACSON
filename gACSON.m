@@ -659,7 +659,7 @@ end
 
 set(handles.sliderSlices, 'Max',maxi);
 set(handles.sliderSlices, 'Min', 1);
-set(handles.sliderSlices, 'SliderStep' , [0.01,0.1] );
+set(handles.sliderSlices, 'SliderStep' , [1/maxi,0.1] );
 sliderValue = get(handles.sliderSlices,'Value');
 handles.S = round(sliderValue);
 set(handles.sliderSlices,'Value', handles.S)
