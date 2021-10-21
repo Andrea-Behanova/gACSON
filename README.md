@@ -13,6 +13,7 @@ Graphical user interface (GUI) for the segmentation and quantification of EM im
 This software uses BM4D Matlab software, which can be found in http://www.cs.tut.fi/~foi/GCF-BM3D/
 
 This software uses Bio-Formats 5.9.2 package, which can be found in https://www.openmicroscopy.org/bio-formats/downloads/
+
 The path to the Bioformats has to be adjusted in file gACSON.m on the line 156.
 
 This version of the software has been implemented and tested in Matlab R2018b.
