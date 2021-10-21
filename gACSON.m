@@ -1,4 +1,4 @@
-ACSON.m%Copyright (c) 2020 Andrea Behanova, Ali Abdollahzadeh, Alejandra Sierra, Jussi Tohka
+%Copyright (c) 2020 Andrea Behanova, Ali Abdollahzadeh, Alejandra Sierra, Jussi Tohka
 %A.I. Virtanen Institute for Molecular Sciences, University of Eastern
 %Finland, Finland
 
