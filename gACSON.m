@@ -49,7 +49,7 @@ function varargout = gACSON(varargin)
 
 % Edit the above text to modify the response to help gACSON
 
-% Last Modified by GUIDE v2.5 26-May-2020 12:36:18
+% Last Modified by GUIDE v2.5 11-Feb-2022 16:43:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -117,6 +117,9 @@ set(handles.sliderSlices,'Value',1)
 %alpha
 handles.alpha = 0.3;
 set(handles.alphafactor,'Value',handles.alpha);
+
+%buttons
+set(handles.Erase_button, 'Value', 0)
 
 handles.opt = [];
 handles.opt.filt_im = 1;
@@ -827,10 +830,12 @@ function Erase_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if handles.sbplt == 1
     errordlg('Change the view','One image should be displayed');
+    set(handles.Erase_button, 'Value', 0)
     return
 end
 
 if isempty(handles.overChoice)
+    set(handles.Erase_button, 'Value', 0)
     return
 end
 
@@ -847,25 +852,38 @@ lbl = handles.image(handles.indxLBL);
 
 if isempty(lbl)
     f = errordlg('Load the labels','Labels not found');
+    set(handles.Erase_button, 'Value', 0)
     return
 end
 
 lbl = lbl{1,1};
 
-g = get(gca,'children');
-h = imfreehand();
-BW = createMask(h, g(1));
-delete(h)
-[x,y] = find(BW);
-linearInd = sub2ind([r,c,sno], x, y, repmat(S, length(x),1));
-lbl(linearInd) = 0;
-Lrgb = label2rgb(lbl(:,:,S),'jet', 'k', 'shuffle'); hold on
-%set(handles.himage, 'cdata', Lrgb, 'AlphaData', handles.alpha); hold off
+val = get(hObject,'Value');
 
-%saving handles
-lbl2{1,1} = lbl;
-handles.image(handles.indxLBL) = lbl2;
-Disp(hObject, eventdata, handles);
+if val == 0
+    Disp(hObject, eventdata, handles);
+end
+
+while val
+    g = get(gca,'children');
+    h = imfreehand();
+    if isempty(h)
+        return
+    end
+
+    BW = createMask(h, g(1));
+    delete(h)
+    [x,y] = find(BW);
+    linearInd = sub2ind([r,c,sno], x, y, repmat(S, length(x),1));
+    lbl(linearInd) = 0;
+    Lrgb = label2rgb(lbl(:,:,S),'jet', 'k', 'shuffle'); hold on
+    %set(handles.himage, 'cdata', Lrgb, 'AlphaData', handles.alpha); hold off
+    
+    %saving handles
+    lbl2{1,1} = lbl;
+    handles.image(handles.indxLBL) = lbl2;
+    Disp(hObject, eventdata, handles);
+end
 guidata(hObject, handles);
 
 
@@ -876,10 +894,12 @@ function Fill_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if handles.sbplt == 1
     errordlg('Change the view','One image should be displayed');
+    set(handles.Fill_button, 'Value', 0)
     return
 end
 
 if isempty(handles.indx)
+    set(handles.Fill_button, 'Value', 0)
     return
 end
 
@@ -897,26 +917,37 @@ lbl = handles.image(handles.indxLBL);
 
 if isempty(lbl)
     f = errordlg('Load the labels','Labels not found');
+    set(handles.Fill_button, 'Value', 0)
     return
 end
 
 lbl = lbl{1,1};
 
+val = get(hObject,'Value');
 
-g = get(gca,'children');
-h = imfreehand();
-BW = createMask(h, g(1));
-delete(h)
-[x,y] = find(BW);
-linearInd = sub2ind([r,c,sno], x, y, repmat(S, length(x),1));
-lbl(linearInd) = max(lbl(:))+1;
-Lrgb = label2rgb(lbl(:,:,S),'jet', 'k', 'shuffle'); hold on
-%set(handles.himage, 'cdata', Lrgb, 'AlphaData', handles.alpha); hold off
+if val == 0
+    Disp(hObject, eventdata, handles);
+end
 
-%saving handles
-lbl2{1,1} = lbl;
-handles.image(handles.indxLBL) = lbl2;
-Disp(hObject, eventdata, handles);
+while val
+    g = get(gca,'children');
+    h = imfreehand();
+    if isempty(h)
+        return
+    end
+    BW = createMask(h, g(1));
+    delete(h)
+    [x,y] = find(BW);
+    linearInd = sub2ind([r,c,sno], x, y, repmat(S, length(x),1));
+    lbl(linearInd) = max(lbl(:))+1;
+    Lrgb = label2rgb(lbl(:,:,S),'jet', 'k', 'shuffle'); hold on
+    %set(handles.himage, 'cdata', Lrgb, 'AlphaData', handles.alpha); hold off
+    
+    %saving handles
+    lbl2{1,1} = lbl;
+    handles.image(handles.indxLBL) = lbl2;
+    Disp(hObject, eventdata, handles);
+end
 guidata(hObject, handles);
 
 function mouseScrollAlpha(hObject, eventdata,handles)
@@ -1000,9 +1031,9 @@ set(handles.alphafactor, 'Position', [0.05 0.3 0.9 0.4]);
 
 set(handles.manual_segm,'Units', 'normalized');
 set(handles.manual_segm, 'Position', [0.02 0.16+2*step 1/7 1/15]);
-set(handles.Erase_button, 'Position', [0.04 0.2 1/4 0.6]);
-set(handles.Fill_button, 'Position', [0.37 0.2 1/4 0.6]);
-set(handles.merge_button, 'Position', [0.7 0.2 1/4 0.6]);
+set(handles.Erase_button, 'Position', [0.045 0.2 0.28 0.6]);
+set(handles.Fill_button, 'Position', [0.365 0.2 1/4 0.6]);
+set(handles.merge_button, 'Position', [0.655 0.2 0.3 0.6]);
 
 set(handles.Iso_surf, 'Position', [0.02 0.26 0.035 0.03]);
 set(handles.Delete,'Units', 'normalized');
@@ -3118,3 +3149,21 @@ if logical(file_name)
     save(FileName, 'file', '-v7.3');
 end
 
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over Erase_button.
+function Erase_button_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to Erase_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on key press with focus on Erase_button and none of its controls.
+function Erase_button_KeyPressFcn(hObject, eventdata, handles)
+% hObject    handle to Erase_button (see GCBO)
+% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
+%	Key: name of the key that was pressed, in lower case
+%	Character: character interpretation of the key(s) that was pressed
+%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
+% handles    structure with handles and user data (see GUIDATA)
