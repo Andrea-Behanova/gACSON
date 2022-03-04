@@ -644,11 +644,10 @@ if handles.sbplt == 1
     return
 end
 
-if isempty(handles.size)
+if isempty(handles.size) || (isempty(handles.indx) && isempty(handles.indxLBL))
     maxi = 5;
     set(handles.sliderSlices,'Value', 1)
-else
-    
+else    
     if isempty(handles.indx)
         inx = handles.size(handles.indxLBL);
     else
@@ -720,21 +719,22 @@ function sliderSlices_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-if isempty(handles.size)
+if isempty(handles.size) || (isempty(handles.indx) && isempty(handles.indxLBL))
     maxi = 5;
     set(handles.sliderSlices, 'Value', 1)
 else
-    inx = handles.size(handles.indx);
+    if isempty(handles.indx)
+        inx = handles.size(handles.indxLBL);
+    else
+        inx = handles.size(handles.indx);
+    end
+    
     if length(inx{1,1})==2
         sno = 1;
     else
         sno = inx{1,1}(3);
     end
     maxi = sno;
-end
-
-if get(handles.sliderSlices, 'Value') > maxi
-    set(handles.sliderSlices, 'Value', maxi)
 end
 
 set(handles.sliderSlices, 'Max', maxi);
@@ -3020,10 +3020,6 @@ result(linPos2) = 2;
 %result = ~logical(result);
 
 
-
-
-
-
 % --- Executes on selection change in listFiles.
 function listFiles_Callback(hObject, eventdata, handles)
 % hObject    handle to listFiles (see GCBO)
@@ -3032,13 +3028,15 @@ function listFiles_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listFiles contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listFiles
-set(handles.save_from_list_file, 'Enable', 'on')
 
-index_selected = get(handles.listFiles,'Value');
-file_list = get(handles.listFiles,'String');
-if iscell(file_list)
+index_selected = get(handles.listFiles, 'Value');
+file_list = get(handles.listFiles, 'String');
+if ~iscell(file_list)
+    handles.sel_filename = file_list;    
+else    
     filename = file_list{index_selected};
     handles.sel_filename = filename;
+    set(handles.save_from_list_file, 'Enable', 'on')
 end
 guidata(hObject, handles);
 
