@@ -112,7 +112,7 @@ handles.morph.grid = 15;
 
 %slices
 handles.S = 1;
-set(handles.sliderSlices,'Value',1)
+set(handles.sliderSlices, 'Value', 1)
 
 %alpha
 handles.alpha = 0.3;
@@ -646,6 +646,7 @@ end
 
 if isempty(handles.size)
     maxi = 5;
+    set(handles.sliderSlices,'Value', 1)
 else
     
     if isempty(handles.indx)
@@ -662,12 +663,12 @@ else
     maxi = sno;
 end
 
-set(handles.sliderSlices, 'Max',maxi);
+set(handles.sliderSlices, 'Max', maxi);
 set(handles.sliderSlices, 'Min', 1);
-set(handles.sliderSlices, 'SliderStep' , [1/maxi,0.1] );
-sliderValue = get(handles.sliderSlices,'Value');
+set(handles.sliderSlices, 'SliderStep' , [1/maxi,0.2] );
+sliderValue = get(handles.sliderSlices, 'Value');
 handles.S = round(sliderValue);
-set(handles.sliderSlices,'Value', handles.S)
+set(handles.sliderSlices, 'Value', handles.S)
 
 indx = strcmp(handles.listFiles.String, handles.dispChoice);
 % if isempty(handles.dispChoice)
@@ -721,6 +722,7 @@ function sliderSlices_Callback(hObject, eventdata, handles)
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 if isempty(handles.size)
     maxi = 5;
+    set(handles.sliderSlices, 'Value', 1)
 else
     inx = handles.size(handles.indx);
     if length(inx{1,1})==2
@@ -731,12 +733,16 @@ else
     maxi = sno;
 end
 
-set(handles.sliderSlices, 'Max',maxi);
+if get(handles.sliderSlices, 'Value') > maxi
+    set(handles.sliderSlices, 'Value', maxi)
+end
+
+set(handles.sliderSlices, 'Max', maxi);
 set(handles.sliderSlices, 'Min', 1);
-set(handles.sliderSlices, 'SliderStep' , [0.01,0.1] );
-sliderValue = get(handles.sliderSlices,'Value');
+set(handles.sliderSlices, 'SliderStep' , [0.01, 0.2] );
+sliderValue = get(handles.sliderSlices, 'Value');
 handles.S = round(sliderValue);
-set(handles.sliderSlices,'Value', handles.S)
+set(handles.sliderSlices, 'Value', handles.S)
 
 set (gcf, 'WindowScrollWheelFcn', {@mouseScroll, handles}); 
 Disp(hObject, eventdata, handles);
