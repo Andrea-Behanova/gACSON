@@ -562,7 +562,6 @@ if iscell(Files)
     close(f)
 end
 
-
 guidata(hObject, handles);
 
 % --------------------------------------------------------------------
@@ -573,10 +572,13 @@ function import_workspace_Callback(hObject, eventdata, handles)
 
 list_ws = evalin('base', 'who');
 list_ws = [{'Select variable...'}; list_ws];
-[indx,tf] = listdlg('PromptString',{'matlab workspace variables:',''},'SelectionMode','single','ListString',list_ws);
+[index,tf] = listdlg('PromptString',{'matlab workspace variables:',''},'SelectionMode','single','ListString',list_ws);
 
+if isempty(index)
+    return
+end
 
-v_name = list_ws{indx};
+v_name = list_ws{index};
 
 if strcmp(v_name,'Select variable...')
     return
