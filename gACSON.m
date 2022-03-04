@@ -173,13 +173,16 @@ guidata(hObject, handles);
 
 function dispSelection(hObject, eventdata, handles)
 %selection change in display pop up menu
-if strcmp(handles.dispChoice, 'No Display')
-    set(get(gca,'children'),'Visible','off')
+if isempty(handles.dispChoice)
+    return
+elseif strcmp(handles.dispChoice, 'No Display')
+    set(handles.subplot, 'Enable', 'off', 'State', 'off')       
+           
     handles.dispChoice = [];
     handles.indx = [];
-elseif isempty(handles.dispChoice)
-    return
+    set(get(gca,'children'),'Visible','off')
 else
+    set(handles.subplot, 'Enable', 'on')
     indx = strcmp(handles.listFiles.String, handles.dispChoice);
     indx = indx(2:end);
     handles.indx = indx;
@@ -237,6 +240,7 @@ if handles.sbplt == 1
     subplots(hObject, eventdata, handles, handles.subplots.slider1, handles.subplots.slider2, handles.subplots.slider3)
 end
 colors = lines;
+
 %Machine learning myelin
 if ~isempty(handles.ML.myelin.pos)
     act_pos = handles.ML.myelin.pos(:,3)==handles.S;
@@ -253,52 +257,52 @@ if ~isempty(handles.ML.bg.pos)
 end
 
 %selection change in overlay pop up menu
-    if strcmp(handles.overChoice, 'No Overlay')
-        set(get(gca,'children'),'Visible','off')
-        handles.overChoice = [];
-        handles.indxLBL = [];
-        dispSelection(hObject, eventdata, handles)
-    elseif isempty(handles.overChoice)
-        return
-    else
-        indx = strcmp(handles.listFiles.String, handles.overChoice);
-        indx = indx(2:end);
-        handles.indxLBL = indx;
-        image = handles.image(indx);
-        slice = handles.S;
-        lbl = image{1,1}(:,:,slice);
-        Lrgb = label2rgb(round(lbl),'jet', 'k', 'shuffle');
-        %Lrgb = label2rgb(round(lbl),'lines', 'k');
-        axes(handles.Picture)
-        himage = imshow(Lrgb); himage.AlphaData = handles.alpha;
-        handles.himage = himage;
-        hold off
-    end
-    
-    if ~isempty(handles.tp_idx)
-        for i = 1:size(handles.tp_idx,1)
-            if handles.tp_idx(i,3)==handles.S
-                text(handles.tp_idx(i,2),handles.tp_idx(i,1),'TP','Color','green','FontSize',10);
-            end
+if strcmp(handles.overChoice, 'No Overlay')
+    set(get(gca,'children'),'Visible','off')
+    handles.overChoice = [];
+    handles.indxLBL = [];
+    dispSelection(hObject, eventdata, handles)
+elseif isempty(handles.overChoice)
+    return
+else
+    indx = strcmp(handles.listFiles.String, handles.overChoice);
+    indx = indx(2:end);
+    handles.indxLBL = indx;
+    image = handles.image(indx);
+    slice = handles.S;
+    lbl = image{1,1}(:,:,slice);
+    Lrgb = label2rgb(round(lbl),'jet', 'k', 'shuffle');
+    %Lrgb = label2rgb(round(lbl),'lines', 'k');
+    axes(handles.Picture)
+    himage = imshow(Lrgb); himage.AlphaData = handles.alpha;
+    handles.himage = himage;
+    hold off
+end
+
+if ~isempty(handles.tp_idx)
+    for i = 1:size(handles.tp_idx,1)
+        if handles.tp_idx(i,3)==handles.S
+            text(handles.tp_idx(i,2),handles.tp_idx(i,1),'TP','Color','green','FontSize',10);
         end
     end
-    
-    if ~isempty(handles.fp_idx)
-        for i = 1:size(handles.fp_idx,1)
-            if handles.fp_idx(i,3)==handles.S
-                text(handles.fp_idx(i,2),handles.fp_idx(i,1),'FP','Color','red','FontSize',10);
-            end
+end
+
+if ~isempty(handles.fp_idx)
+    for i = 1:size(handles.fp_idx,1)
+        if handles.fp_idx(i,3)==handles.S
+            text(handles.fp_idx(i,2),handles.fp_idx(i,1),'FP','Color','red','FontSize',10);
         end
     end
-    
-    if ~isempty(handles.fn_idx)
-        for i = 1:size(handles.fn_idx,1)
-            if handles.fn_idx(i,3)==handles.S
-                text(handles.fn_idx(i,2),handles.fn_idx(i,1),'FN','Color','yellow','FontSize',10);
-            end
+end
+
+if ~isempty(handles.fn_idx)
+    for i = 1:size(handles.fn_idx,1)
+        if handles.fn_idx(i,3)==handles.S
+            text(handles.fn_idx(i,2),handles.fn_idx(i,1),'FN','Color','yellow','FontSize',10);
         end
     end
-    
+end
+
 
     
 guidata(hObject, handles);
