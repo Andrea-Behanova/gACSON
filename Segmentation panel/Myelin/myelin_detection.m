@@ -16,7 +16,7 @@ imshow(f)
 %set(fig, 'Position', [1000 600 700 700]);
 S = [];
 S.thr = thr;
-
+assignin('base','threshold',thr)
 
 h = uicontrol('Style', 'slider', 'Callback', {@sliderCallback,handles}, 'Min',slmin,'Max',slmax,...
                 'SliderStep',[1 1]./double(slmax-slmin),'Value',thr,...

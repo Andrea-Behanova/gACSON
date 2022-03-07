@@ -175,9 +175,14 @@ function dispSelection(hObject, eventdata, handles)
 %selection change in display pop up menu
 if isempty(handles.dispChoice)
     return
-elseif strcmp(handles.dispChoice, 'No Display')
-    set(handles.subplot, 'Enable', 'off', 'State', 'off')       
-           
+end
+    
+if handles.sbplt == 1
+    errordlg('Change the view', 'One image should be displayed');        
+    return
+end
+
+if strcmp(handles.dispChoice, 'No Display')
     handles.dispChoice = [];
     handles.indx = [];
     set(get(gca,'children'),'Visible','off')
@@ -910,7 +915,7 @@ if handles.sbplt == 1
     return
 end
 
-if isempty(handles.indx)
+if isempty(handles.overChoice)
     set(handles.Fill_button, 'Value', 0)
     return
 end
