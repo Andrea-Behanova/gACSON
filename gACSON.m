@@ -175,11 +175,6 @@ function dispSelection(hObject, eventdata, handles)
 if isempty(handles.dispChoice)
     return
 end
-    
-if handles.sbplt == 1
-    errordlg('Change the view', 'One image should be displayed');        
-    return
-end
 
 if strcmp(handles.dispChoice, 'No Display')
     handles.dispChoice = [];
@@ -334,6 +329,14 @@ function DisplayPopUp_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from DisplayPopUp
 
 % selection
+
+if handles.sbplt == 1
+    errordlg('Change the subplot view', 'One image should be displayed');    
+    %set(handles.DisplayPopUp, 'Value', 1);
+    %set(handles.subplot, 'State', 'off')
+    return
+end
+
 handles.MLseg.Nlbl = 2;
 handles.MLseg.lbl0 = [];
 handles.MLseg.lbl1 = [];
