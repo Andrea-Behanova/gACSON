@@ -1,4 +1,5 @@
 function [label] = Choosed_seed_segmenttaion(opt,hObject,handles)
+
 [y,x] = getpts; y = round(y(:,1)); x = round(x(:,1));
 z = (handles.S+1)*ones(1,length(x))';
 choice = [x+1, y+1, z];
@@ -67,10 +68,10 @@ bound_im(mask) = true;
 %save(strcat(s_address,'mat_edge'),'bound_im','-v7.3')
 
 bound_im = imdilate(bound_im,true(3));
-
 waitbar(0.3,g);
-%% Myelin detection
 
+
+%% Myelin detection
 
 if myelin_inx == 0
     thr = evalin('base', 'threshold');

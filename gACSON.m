@@ -112,14 +112,14 @@ handles.morph.grid = 15;
 
 %slices
 handles.S = 1;
-set(handles.sliderSlices, 'Value', 1)
+set(handles.sliderSlices,'Value',1)
 
 %alpha
 handles.alpha = 0.3;
 set(handles.alphafactor,'Value',handles.alpha);
 
 %buttons
-set(handles.Erase_button, 'Value', 0)
+set(handles.Erase_button,'Value',0)
 
 handles.opt = [];
 handles.opt.filt_im = 1;
@@ -134,7 +134,6 @@ handles.opt.read_im = [];
 txt = get(handles.seed_location,'String');
 txt = {txt; 'Watershed centroids'; 'Manual selection'};
 set(handles.seed_location,'String',txt);
-% handles.opt.seed_loc = 'Regional maxima';
 handles.seed_loc = 'Regional maxima';
 
 set (gcf, 'WindowScrollWheelFcn', {@mouseScroll, handles}); 
@@ -459,7 +458,7 @@ for i = 1:L
 
     [pth,name,ext] = fileparts(filepath);
 
-    prompt = {'x:','y:','z:'};
+    prompt = {'x (nm):','y (nm):','z (nm):'};
     dlgtitle = ['Voxel size of ', filename];
     definput = {'1','1','1'};
     dims = [ones(size(definput')) ones(size(definput'))*50];
@@ -596,7 +595,7 @@ end
 image = evalin('base', v_name);
 filename = v_name;
 
-prompt = {'x:','y:','z:'};
+prompt = {'x (nm):','y (nm):','z (nm):'};
 dlgtitle = ['Voxel size of ', filename];
 definput = {'1','1','1'};
 dims = [ones(size(definput')) ones(size(definput'))*50];
@@ -1880,6 +1879,8 @@ elseif strcmp(choice, 'Manual selection')
     
     image = squeeze(label);
     sz = size(image);
+    indx = strcmp(handles.listFiles.String, handles.opt.read_im);
+    indx = indx(2:end);
     voxel_size = handles.vox_size(indx);
     voxel_size = voxel_size{1,1};
     filename = ['seg_', opt.read_im];
@@ -2321,20 +2322,11 @@ for i = 1:NumLbl
         s = regionprops(k,'Area');
         Areas = cat(1, s.Area);
         [val, idx] = max(Areas);
-%         if idx == 42
-%             4
-%         end
         myelin(h==idx)=i;
-%         k(k>0)=true;
-%         k = logical(k);
-        
     end
     frac = i/(NumLbl/100)/100;
     waitbar(frac,f,sprintf('Myelin+IAS - same label: %d/%d axons done', i, NumLbl));
 end
-%
-
-
 
 
 for i = 1:NumLbl
@@ -2369,6 +2361,9 @@ axon(1).LabelMyelin = myelin;
 
 
 [filename, filepath] = uiputfile('*.mat', 'Save the project file:',name);
+if filename == 0
+    return
+end
 FileName = fullfile(filepath, filename);
 save(FileName, 'axon', '-v7.3');
 
