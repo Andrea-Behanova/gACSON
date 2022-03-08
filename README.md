@@ -1,19 +1,22 @@
 # gACSON
 
-gACSON software is to visualize, segment, and analyze the morphology of neurons in three-dimensional electron microscopy images.
+gACSON is a freely available Matlab-based software, developed for visualization, segmentation, assessment, and morphology analysis of myelinated axons in 3D-EM volumes of brain tissue samples.
 
-If you use any part of gACSON in your research, please cite the software as
+If you use gACSON in your research, please cite it as
 
 [![DOI](https://zenodo.org/badge/214974720.svg)](https://zenodo.org/badge/latestdoi/214974720)
 
-The segmentation algorithm used in gACSON is based on ACSON pipeline described in Abdollahzadeh, A., Belevich, I., Jokitalo, E., Tohka, J. & Sierra, A. Automated 3D Axonal Morphometry of WhiteMatter.Sci. Reports9, 6084 (2019).
+The segmentation algorithm used in gACSON is based on ACSON pipeline described in:
 
-Graphical user interface (GUI) for the segmentation and quantification of EM images in grey matter in MATLAB, enabling user interactive segmentation, proofreading, and correcting errors of an automated segmentation.
+Abdollahzadeh, A., Belevich, I., Jokitalo, E., Tohka, J. & Sierra, A. Automated 3D Axonal Morphometry of WhiteMatter.Sci. Reports9, 6084 (2019).
 
-This software uses BM4D Matlab software, which can be found in http://www.cs.tut.fi/~foi/GCF-BM3D/
+This software uses several external packages as follows:
 
-This software uses Bio-Formats 5.9.2 package, which can be found in https://www.openmicroscopy.org/bio-formats/downloads/
+- Bio-Formats package: https://www.openmicroscopy.org/bio-formats/downloads/
+- Block-matching and 4D filtering (BM4D) algorithm for image denoising: http://www.cs.tut.fi/~foi/GCF-BM3D/
+- SLIC supervoxels https://github.com/fk128/SLICSupervoxels
+- Accurate fast marching and skeletonization: https://www.mathworks.com/matlabcentral/fileexchange/24531-accurate-fast-marching?s_tid=prof_contriblnk
 
-In order to be able to use this software, please download these two packages and place them into the gACSON directory.
+Please download the Bio-Formats and BM4D packages and place them into the gACSON directory.
 
-This version of the software has been implemented and tested in Matlab R2018b.
+This version of the software has been implemented and tested in Matlab R2020b.
