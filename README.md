@@ -17,7 +17,7 @@ This software uses several external packages as follows:
 - SLIC supervoxels https://github.com/fk128/SLICSupervoxels
 - Accurate fast marching and skeletonization: https://www.mathworks.com/matlabcentral/fileexchange/24531-accurate-fast-marching?s_tid=prof_contriblnk
 
-Please download the Bio-Formats and BM4D packages and place them into the gACSON directory.
+Please download the Bio-Formats and BM4D packages and place them into the gACSON directory. SLIC supervoxels and Accurate fast marching and skeletonization code is included in gACSON package, but they are distributed under a different open-source licence. Check the licence information in the respective directories.  
 
 This version of the software has been implemented and tested in Matlab R2020b.
 
