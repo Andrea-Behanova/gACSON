@@ -20,3 +20,5 @@ This software uses several external packages as follows:
 Please download the Bio-Formats and BM4D packages and place them into the gACSON directory.
 
 This version of the software has been implemented and tested in Matlab R2020b.
+
+<img src="fig/disp_seg.gif" width="260" height="200" />
