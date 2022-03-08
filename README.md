@@ -24,10 +24,15 @@ This version of the software has been implemented and tested in Matlab R2020b.
 ___________________________________________________________________________________________________________________
 
 Displaying an EM image with its overlaid segmentation: 
+
 <img src="fig/disp_seg.gif" width="390" height="250" />
 
+
 Machine learning-based semantic segmentation of myelin:
+
 <img src="fig/ML_myelin_seg.gif" width="390" height="250" />
 
+
 Evaluation panel:
+
 <img src="fig/evaluation.gif" width="390" height="250" />
