@@ -21,4 +21,4 @@ Please download the Bio-Formats and BM4D packages and place them into the gACSON
 
 This version of the software has been implemented and tested in Matlab R2020b.
 
-<img src="fig/disp_seg.gif" width="390" height="300" />
+<img src="fig/disp_seg.gif" width="390" height="250" />
