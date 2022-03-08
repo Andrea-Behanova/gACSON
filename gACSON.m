@@ -154,9 +154,6 @@ handles.res = [];
 currentFolder = fileparts(which('gACSON.m'));
 addpath(genpath(currentFolder));
 
-%path to the Bio Formats
-addpath('..\bfmatlab')
-
 %Machine Learning - myelin detection
 handles.ML.myelin.pos = [];
 handles.ML.bg.pos = [];
