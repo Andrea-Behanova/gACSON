@@ -21,6 +21,8 @@ Please download the Bio-Formats and BM4D packages and place them into the gACSON
 
 This version of the software has been implemented and tested in Matlab R2020b.
 
+A manual is available [here](https://docs.google.com/presentation/d/1qeAwYf-yLEzeY5ch08ZSZvE08q1JwcFN/edit?usp=sharing&ouid=110327177656302699585&rtpof=true&sd=true) - posted separately due to the file size. Please note that many of the slides contain videos - if they are not visible please download the file.    
+
 ___________________________________________________________________________________________________________________
 
 **Displaying an EM image with its overlaid segmentation:** 
