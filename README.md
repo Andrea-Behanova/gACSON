@@ -26,3 +26,7 @@ ________________________________________________________________________________
 Displaying an EM image with its overlaid segmentation. 
 
 <img src="fig/disp_seg.gif" width="390" height="250" />
+
+Machine learning-based semantic segmentation of myelin.
+
+<img src="fig/ML_myelin_seg.gif" width="390" height="250" />
