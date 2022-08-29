@@ -2,7 +2,7 @@ function AllS2D = util_planeEq_alpha05(bw,skel,nTangVec,IAS,resolut)
 % IAS = 1 =intraaxonal space
 % IAS = 2 =myelin
 AllS2D = struct('Point',[],'Area',[],'MajorAxisLength',[],'MinorAxisLength',[],'Eccentricity',[],'EquivDiameter',[],'Thickness',[]);
-r = 30; res = 0.25; k = 1;
+r = 50; res = 0.25; k = 1;
 for i = 1:length(skel)
     L = skel{i};
     tngV = nTangVec{i};
@@ -33,16 +33,16 @@ for i = 1:length(skel)
 %         slice(double(bw),yy,xx,zz); hold on ; p = patch(isosurface(smooth3(bw,'gaussian',15),0.5)); 
 %         p.FaceColor = 'red'; p.EdgeColor = 'none'; p.FaceAlpha = 0.3;
 %         set(gca,'PlotBoxAspectRatio',[1 1 3.6])
-        if k==60
-           k
-        end
-        if k==160
-            k
-        end
-        if k==300
-            k
-        end
-
+%         if k==60
+%            k
+%         end
+%         if k==160
+%             k
+%         end
+%         if k==300
+%             k
+%         end
+% 
 % colors = lines;
 % slice(double(bw),yy,xx,zz); hold on ; p = patch(isosurface(smooth3(bw,'gaussian',15),0.5));
 % p.FaceColor = colors(2,:); p.EdgeColor = 'none';

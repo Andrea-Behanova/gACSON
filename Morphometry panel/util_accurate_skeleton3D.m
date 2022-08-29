@@ -10,7 +10,15 @@ stats = regionprops(lbl,'Area');
 [~,inxMain] = max([stats.Area]);
 if ~isempty(inxMain)
     nBW = lbl==inxMain;
-    skel = skeleton(nBW,false);
+    z = find(sum(sum(nBW,1),2));
+    skel = zeros(numel(z),3);
+    for jj = z'
+        im_2d = nBW(:,:,jj);
+        [I, J] = ind2sub([r1, c1],find(im_2d));
+        skel(jj, :) = [mean(I), mean(J), jj];
+    end
+    skel = movmean(skel, 10);
+%     skel = skeleton(nBW,false);
 else
     skel = [];
     nBW = [];

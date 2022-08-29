@@ -10,26 +10,23 @@ allQuants = cell(numLabel,1);
 allS2D = [];
 allS2D2 = [];
 
-myelin2 = false(size(myelin));
-CC2 = bwconncomp(myelin);
-numPixels2 = cellfun(@numel,CC2.PixelIdxList);
-[biggest,idx2] = max(numPixels2);
-myelin2(CC2.PixelIdxList{idx2}) = 1;
-
 %myelin
-s3D2 = regionprops(myelin2,'BoundingBox','PixelIdxList');
+s3D2 = regionprops(myelin,'BoundingBox','PixelIdxList');
 numLabel2 = length(s3D2);
-%
-
 for N = 1:numLabel
     pixIdxList = s3D(N).PixelIdxList;
     if length(pixIdxList)>4000
-        bb = s3D2(N).BoundingBox;
+        bb = s3D(N).BoundingBox;
         axon = false(sz);
         axon(pixIdxList) = true;
         [cropAxon,~] = util_extract_bounded_obj(axon,bb,[9,9,3]);
+        for jj = 1:size(cropAxon, 3)
+            im_2d = cropAxon(:,:,jj);
+            im_2d = imfill(im_2d, 'holes');
+            cropAxon(:,:,jj) = im_2d;
+        end
         cropAxon = imclose(cropAxon,true(5,5,5));
-        
+
         [skel,nBW] = util_accurate_skeleton3D(cropAxon,res);            
         allSkel(N) = {skel};
         
@@ -40,26 +37,32 @@ for N = 1:numLabel
         myelin2(pixIdxList2) = true;
         [cropMyelin,~] = util_extract_bounded_obj(myelin2,bb2,[9,9,3]);
         cropMyelin = imclose(cropMyelin,true(5,5,5));
+
+        myelin2 = false(size(cropMyelin));
+        CC2 = bwconncomp(cropMyelin);
+        numPixels2 = cellfun(@numel,CC2.PixelIdxList);
+        [~,idx2] = max(numPixels2);
+        myelin2(CC2.PixelIdxList{idx2}) = 1;
         
-        [skel2,nBW2] = util_accurate_skeleton3D(cropMyelin,res); 
+        [skel2,nBW2] = util_accurate_skeleton3D(myelin2,res); 
         %
                         
         if ~isempty(skel) && ~isempty(skel2)
-            orderedCentLine = util_centerLine_extract(skel,size(nBW));
-            allorderedCentLine(N) = {orderedCentLine};
-
-            nTangVec = cell(length(orderedCentLine),1);
-            for i = 1:length(orderedCentLine)    
-                L = orderedCentLine{i};
-                if ~isempty(L)
-                    nTangVec{i} = util_normalTangentVector(L,0);
-                end
-            end
-            BW = false(size(nBW));
-            CC = bwconncomp(nBW);
-            numPixels = cellfun(@numel,CC.PixelIdxList);
-            [biggest,idx] = max(numPixels);
-            BW(CC.PixelIdxList{idx}) = 1;
+%             orderedCentLine = util_centerLine_extract(skel,size(nBW));
+%             allorderedCentLine(N) = {orderedCentLine};
+            orderedCentLine = {skel};
+%             nTangVec = cell(length(orderedCentLine),1);
+%             for i = 1:length(orderedCentLine)    
+%                 L = orderedCentLine(i);
+%                 if ~isempty(L)
+            nTangVec = {util_normalTangentVector(skel,0)};
+%                 end
+%             end
+%             BW = false(size(nBW));
+%             CC = bwconncomp(nBW);
+%             numPixels = cellfun(@numel,CC.PixelIdxList);
+%             [biggest,idx] = max(numPixels);
+%             BW(CC.PixelIdxList{idx}) = 1;
             
 %             BW2 = false(size(nBW2));
 %             CC2 = bwconncomp(nBW2);
