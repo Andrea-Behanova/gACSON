@@ -29,7 +29,7 @@ for i = 1:length(skel)
         zz = reshape(zz,size(x))+ point(3);
         
         cross_section = interp3(double(bw),yy,xx,zz);
-        
+%
 %         slice(double(bw),yy,xx,zz); hold on ; p = patch(isosurface(smooth3(bw,'gaussian',15),0.5)); 
 %         p.FaceColor = 'red'; p.EdgeColor = 'none'; p.FaceAlpha = 0.3;
 %         set(gca,'PlotBoxAspectRatio',[1 1 3.6])

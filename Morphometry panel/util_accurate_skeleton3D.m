@@ -17,7 +17,7 @@ if ~isempty(inxMain)
         [I, J] = ind2sub([r1, c1],find(im_2d));
         skel(jj, :) = [mean(I), mean(J), jj];
     end
-    skel = movmean(skel, 10);
+    skel = movmean(skel, 11);
 %     skel = skeleton(nBW,false);
 else
     skel = [];

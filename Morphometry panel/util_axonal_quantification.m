@@ -42,7 +42,7 @@ for N = 1:numLabel
         CC2 = bwconncomp(cropMyelin);
         numPixels2 = cellfun(@numel,CC2.PixelIdxList);
         [~,idx2] = max(numPixels2);
-        myelin2(CC2.PixelIdxList{idx2}) = 1;
+        myelin2(CC2.PixelIdxList{idx2}) = true;
         
         [skel2,nBW2] = util_accurate_skeleton3D(myelin2,res); 
         %
